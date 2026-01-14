@@ -6,19 +6,16 @@ import {
   BookOpen,
   Github,
   MessageCircle,
-  FolderOpen,
   ChevronRight,
+  Clock,
+  Folder,
+  FileText,
+  ExternalLink,
+  History,
+  Sparkles,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Separator } from "@/components/ui/separator";
-import {
-  Empty,
-  EmptyContent,
-  EmptyDescription,
-  EmptyHeader,
-  EmptyMedia,
-  EmptyTitle,
-} from "@/components/ui/empty";
+import Image from "next/image";
 
 interface WelcomePageProps {
   onCreateBlank: () => void;
@@ -30,207 +27,289 @@ export default function WelcomePage({
   onImportMenu,
 }: WelcomePageProps) {
   // 模拟最近打开的菜单数据（后续可以从 localStorage 或数据库获取）
-  const recentMenus: Array<{ name: string; path: string; lastOpened: string }> =
-    [];
+  const recentMenus: Array<{
+    id: string;
+    name: string;
+    path: string;
+    lastOpened: string;
+    itemCount: number;
+  }> = [
+    {
+      id: "1",
+      name: "主菜单",
+      path: "D:\\menus\\main-menu.yml",
+      lastOpened: "2 小时前",
+      itemCount: 12,
+    },
+    {
+      id: "2",
+      name: "商店菜单",
+      path: "D:\\menus\\shop-menu.yml",
+      lastOpened: "昨天",
+      itemCount: 8,
+    },
+    {
+      id: "3",
+      name: "传送菜单",
+      path: "D:\\menus\\teleport.yml",
+      lastOpened: "3 天前",
+      itemCount: 15,
+    },
+  ];
+
+  const quickActions = [
+    {
+      icon: Plus,
+      title: "新建菜单",
+      description: "从空白画布开始创建",
+      action: onCreateBlank,
+      variant: "default" as const,
+    },
+    {
+      icon: FileUp,
+      title: "导入配置",
+      description: "从 YAML 文件导入",
+      action: onImportMenu,
+      variant: "outline" as const,
+    },
+    {
+      icon: Folder,
+      title: "打开文件夹",
+      description: "浏览本地菜单文件",
+      action: () => alert("打开文件夹功能即将推出"),
+      variant: "outline" as const,
+    },
+    {
+      icon: Sparkles,
+      title: "使用模板",
+      description: "从预设模板开始",
+      action: () => alert("模板功能即将推出"),
+      variant: "outline" as const,
+    },
+  ];
 
   return (
-    <div className="flex h-full bg-background">
-      {/* 左侧：最近打开和项目列表 */}
-      <div className="flex-1 border-r overflow-auto">
-        <div className="p-6 space-y-6">
-          {/* 品牌区域 - 紧凑版 */}
-          <div className="flex items-center gap-2.5">
-            <div className="w-8 h-8 bg-linear-to-br from-blue-500 to-blue-700 rounded-md flex items-center justify-center">
-              <span className="text-base font-bold text-white">T</span>
+    <div className="flex h-full">
+      {/* 左侧主要区域 */}
+      <div className="flex-1 overflow-auto">
+        <div className="max-w-4xl mx-auto p-12 space-y-10">
+          {/* Logo 和标语 */}
+          <div className="flex items-center gap-6">
+            <div className="relative w-24 h-24 shrink-0">
+              <Image
+                src="/image.png"
+                alt="TrMenu Editor Logo"
+                width={96}
+                height={96}
+                className="rounded-xl"
+                priority
+              />
             </div>
-            <div className="flex-1">
-              <h1 className="text-base font-semibold tracking-tight">
-                TrMenu Editor
+            <div>
+              <h1 className="text-2xl font-semibold mb-1">
+                欢迎使用 TrMenu Editor
               </h1>
-              <p className="text-xs text-muted-foreground">
-                可视化菜单配置编辑器
+              <p className="text-sm text-muted-foreground">
+                可视化菜单配置编辑器，让菜单设计变得简单高效
               </p>
             </div>
           </div>
 
-          <Separator />
+          {/* 快速操作网格 */}
+          <section>
+            <h2 className="text-sm font-medium mb-4 text-muted-foreground">
+              快速操作
+            </h2>
+            <div className="grid grid-cols-2 gap-3">
+              {quickActions.map((action, index) => (
+                <button
+                  key={index}
+                  onClick={action.action}
+                  className="flex items-start gap-4 p-4 text-left bg-card border rounded-lg hover:bg-accent hover:border-accent-foreground/20 transition-all group"
+                >
+                  <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center shrink-0 group-hover:bg-primary/20 transition-colors">
+                    <action.icon className="w-5 h-5 text-primary" />
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <div className="font-medium text-sm mb-0.5">
+                      {action.title}
+                    </div>
+                    <div className="text-xs text-muted-foreground">
+                      {action.description}
+                    </div>
+                  </div>
+                </button>
+              ))}
+            </div>
+          </section>
 
           {/* 最近打开 */}
-          <div className="space-y-2.5">
-            <h2 className="text-xs font-medium text-muted-foreground uppercase tracking-wider px-1">
-              最近打开
-            </h2>
+          <section>
+            <div className="flex items-center justify-between mb-4">
+              <h2 className="text-sm font-medium text-muted-foreground">
+                最近打开
+              </h2>
+              {recentMenus.length > 0 && (
+                <button className="text-xs text-muted-foreground hover:text-foreground transition-colors flex items-center gap-1">
+                  <History className="w-3 h-3" />
+                  查看更多
+                </button>
+              )}
+            </div>
 
             {recentMenus.length === 0 ? (
-              <Empty className="py-8">
-                <EmptyHeader>
-                  <EmptyMedia variant="icon">
-                    <FolderOpen />
-                  </EmptyMedia>
-                  <EmptyTitle>暂无最近打开的菜单</EmptyTitle>
-                  <EmptyDescription>
-                    开始创建新菜单或导入已有的 TrMenu 配置文件
-                  </EmptyDescription>
-                </EmptyHeader>
-                <EmptyContent>
-                  <div className="flex gap-2 justify-center">
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      onClick={onCreateBlank}
-                      className="h-8 text-xs gap-1.5"
-                    >
-                      <Plus className="w-3.5 h-3.5" />
-                      新建
-                    </Button>
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      onClick={onImportMenu}
-                      className="h-8 text-xs gap-1.5"
-                    >
-                      <FileUp className="w-3.5 h-3.5" />
-                      导入
-                    </Button>
-                  </div>
-                </EmptyContent>
-              </Empty>
+              <div className="flex flex-col items-center justify-center py-12 text-center">
+                <div className="w-16 h-16 rounded-full bg-muted/50 flex items-center justify-center mb-4">
+                  <Clock className="w-8 h-8 text-muted-foreground/50" />
+                </div>
+                <p className="text-sm text-muted-foreground mb-1">
+                  暂无最近打开的项目
+                </p>
+                <p className="text-xs text-muted-foreground/60 mb-4">
+                  开始创建或导入菜单配置文件
+                </p>
+                <div className="flex gap-2">
+                  <Button variant="default" size="sm" onClick={onCreateBlank}>
+                    <Plus className="w-4 h-4 mr-1.5" />
+                    新建菜单
+                  </Button>
+                  <Button variant="outline" size="sm" onClick={onImportMenu}>
+                    <FileUp className="w-4 h-4 mr-1.5" />
+                    导入配置
+                  </Button>
+                </div>
+              </div>
             ) : (
-              <div className="space-y-0.5">
-                {recentMenus.map((menu, index) => (
+              <div className="space-y-1">
+                {recentMenus.map((menu) => (
                   <button
-                    key={index}
-                    className="w-full text-left px-2.5 py-2 rounded-md hover:bg-accent transition-colors group flex items-center justify-between"
+                    key={menu.id}
+                    className="w-full flex items-center justify-between px-4 py-3 text-left bg-card border hover:bg-accent hover:border-accent-foreground/20 rounded-lg transition-all group"
                   >
-                    <div className="min-w-0 flex-1">
-                      <div className="font-medium text-sm">{menu.name}</div>
-                      <div className="text-xs text-muted-foreground truncate">
-                        {menu.path}
+                    <div className="flex items-center gap-3 min-w-0 flex-1">
+                      <div className="w-8 h-8 rounded bg-primary/10 flex items-center justify-center shrink-0">
+                        <FileText className="w-4 h-4 text-primary" />
+                      </div>
+                      <div className="min-w-0 flex-1">
+                        <div className="text-sm font-medium mb-0.5">
+                          {menu.name}
+                        </div>
+                        <div className="text-xs text-muted-foreground flex items-center gap-3">
+                          <span className="truncate">{menu.path}</span>
+                          <span className="shrink-0">·</span>
+                          <span className="shrink-0">{menu.itemCount} 项</span>
+                          <span className="shrink-0">·</span>
+                          <span className="shrink-0">{menu.lastOpened}</span>
+                        </div>
                       </div>
                     </div>
-                    <ChevronRight className="w-3.5 h-3.5 text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity shrink-0 ml-2" />
+                    <ChevronRight className="w-4 h-4 text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity shrink-0 ml-2" />
                   </button>
                 ))}
               </div>
             )}
-          </div>
+          </section>
 
           {/* 学习资源 */}
-          <div className="space-y-2.5">
-            <h2 className="text-xs font-medium text-muted-foreground uppercase tracking-wider px-1">
-              帮助与支持
+          <section>
+            <h2 className="text-sm font-medium mb-4 text-muted-foreground">
+              学习与帮助
             </h2>
-            <div className="space-y-0.5">
+            <div className="grid grid-cols-3 gap-3">
               <a
                 href="#"
-                className="flex items-center gap-2.5 px-2.5 py-2 rounded-md hover:bg-accent transition-colors text-sm group"
+                className="flex flex-col items-center justify-center p-4 text-center bg-card border rounded-lg hover:bg-accent hover:border-accent-foreground/20 transition-all group"
               >
-                <BookOpen className="w-3.5 h-3.5 text-muted-foreground shrink-0" />
-                <span className="flex-1">查看文档</span>
+                <BookOpen className="w-5 h-5 text-muted-foreground mb-2 group-hover:text-foreground transition-colors" />
+                <span className="text-sm font-medium">查看文档</span>
               </a>
               <a
                 href="#"
-                className="flex items-center gap-2.5 px-2.5 py-2 rounded-md hover:bg-accent transition-colors text-sm group"
+                className="flex flex-col items-center justify-center p-4 text-center bg-card border rounded-lg hover:bg-accent hover:border-accent-foreground/20 transition-all group"
               >
-                <Github className="w-3.5 h-3.5 text-muted-foreground shrink-0" />
-                <span className="flex-1">GitHub</span>
+                <Github className="w-5 h-5 text-muted-foreground mb-2 group-hover:text-foreground transition-colors" />
+                <span className="text-sm font-medium">GitHub</span>
               </a>
               <a
                 href="#"
-                className="flex items-center gap-2.5 px-2.5 py-2 rounded-md hover:bg-accent transition-colors text-sm group"
+                className="flex flex-col items-center justify-center p-4 text-center bg-card border rounded-lg hover:bg-accent hover:border-accent-foreground/20 transition-all group"
               >
-                <MessageCircle className="w-3.5 h-3.5 text-muted-foreground shrink-0" />
-                <span className="flex-1">反馈</span>
+                <MessageCircle className="w-5 h-5 text-muted-foreground mb-2 group-hover:text-foreground transition-colors" />
+                <span className="text-sm font-medium">反馈</span>
               </a>
             </div>
-          </div>
+          </section>
         </div>
       </div>
 
-      {/* 右侧：快速操作面板 */}
-      <div className="w-[360px] border-l bg-muted/30">
+      {/* 右侧信息面板 */}
+      <div className="w-72 border-l overflow-auto">
         <div className="p-6 space-y-6">
           {/* 快速开始 */}
-          <div className="space-y-2.5">
-            <h2 className="text-xs font-medium text-muted-foreground uppercase tracking-wider px-1">
-              开始使用
-            </h2>
+          <div>
+            <h3 className="text-xs font-medium text-muted-foreground uppercase tracking-wider mb-3">
+              快速开始
+            </h3>
             <div className="space-y-2">
               <Button
-                className="w-full justify-start h-auto py-3 px-3.5"
                 onClick={onCreateBlank}
+                className="w-full justify-start"
+                size="sm"
               >
-                <Plus className="w-4 h-4 mr-2.5 shrink-0" />
-                <div className="text-left flex-1">
-                  <div className="font-medium text-sm">创建空白菜单</div>
-                  <div className="text-xs text-primary-foreground/70 font-normal">
-                    从头开始设计
-                  </div>
-                </div>
+                <Plus className="w-4 h-4 mr-2" />
+                创建空白菜单
               </Button>
-
               <Button
-                variant="outline"
-                className="w-full justify-start h-auto py-3 px-3.5"
                 onClick={onImportMenu}
+                variant="outline"
+                className="w-full justify-start"
+                size="sm"
               >
-                <FileUp className="w-4 h-4 mr-2.5 shrink-0" />
-                <div className="text-left flex-1">
-                  <div className="font-medium text-sm">导入已有菜单</div>
-                  <div className="text-xs text-muted-foreground font-normal">
-                    从 YAML 文件导入
-                  </div>
-                </div>
+                <FileUp className="w-4 h-4 mr-2" />
+                导入现有配置
               </Button>
             </div>
           </div>
 
-          <Separator />
-
-          {/* 功能特性 - 更紧凑 */}
-          <div className="space-y-2.5">
-            <h2 className="text-xs font-medium text-muted-foreground uppercase tracking-wider px-1">
-              功能特性
-            </h2>
-            <div className="space-y-1.5 text-sm">
-              <div className="flex items-start gap-2.5 p-2.5 rounded-md bg-background/50">
-                <div className="w-1.5 h-1.5 rounded-full bg-blue-500 mt-1.5 shrink-0" />
-                <div className="space-y-0.5">
-                  <div className="text-xs font-medium">可视化编辑器</div>
-                  <div className="text-xs text-muted-foreground leading-snug">
-                    图形界面，拖拽式设计
-                  </div>
-                </div>
-              </div>
-              <div className="flex items-start gap-2.5 p-2.5 rounded-md bg-background/50">
-                <div className="w-1.5 h-1.5 rounded-full bg-green-500 mt-1.5 shrink-0" />
-                <div className="space-y-0.5">
-                  <div className="text-xs font-medium">实时预览</div>
-                  <div className="text-xs text-muted-foreground leading-snug">
-                    所见即所得，即时反馈
-                  </div>
-                </div>
-              </div>
-              <div className="flex items-start gap-2.5 p-2.5 rounded-md bg-background/50">
-                <div className="w-1.5 h-1.5 rounded-full bg-amber-500 mt-1.5 shrink-0" />
-                <div className="space-y-0.5">
-                  <div className="text-xs font-medium">完整配置支持</div>
-                  <div className="text-xs text-muted-foreground leading-snug">
-                    支持所有 TrMenu 选项
-                  </div>
-                </div>
-              </div>
+          {/* 常用链接 */}
+          <div>
+            <h3 className="text-xs font-medium text-muted-foreground uppercase tracking-wider mb-3">
+              资源链接
+            </h3>
+            <div className="space-y-1.5">
+              <a
+                href="#"
+                className="flex items-center gap-2 px-2 py-1.5 text-xs hover:bg-accent rounded transition-colors group"
+              >
+                <ExternalLink className="w-3 h-3 text-muted-foreground" />
+                <span className="flex-1">TrMenu 官方文档</span>
+              </a>
+              <a
+                href="#"
+                className="flex items-center gap-2 px-2 py-1.5 text-xs hover:bg-accent rounded transition-colors group"
+              >
+                <ExternalLink className="w-3 h-3 text-muted-foreground" />
+                <span className="flex-1">示例配置</span>
+              </a>
+              <a
+                href="#"
+                className="flex items-center gap-2 px-2 py-1.5 text-xs hover:bg-accent rounded transition-colors group"
+              >
+                <ExternalLink className="w-3 h-3 text-muted-foreground" />
+                <span className="flex-1">社区讨论</span>
+              </a>
             </div>
           </div>
 
-          <Separator />
-
-          {/* 版本信息 - 极简 */}
-          <div className="px-1 space-y-1">
-            <p className="text-xs font-medium">TrMenu Editor v1.0.0</p>
-            <p className="text-xs text-muted-foreground leading-relaxed">
-              基于 Next.js + React 构建
-            </p>
+          {/* 提示 */}
+          <div className="p-3 bg-muted/50 rounded-lg">
+            <div className="flex items-start gap-2">
+              <Sparkles className="w-4 h-4 text-primary shrink-0 mt-0.5" />
+              <div className="text-xs text-muted-foreground">
+                <p className="font-medium text-foreground mb-1">小提示</p>
+                <p>使用快捷键 Ctrl+N 快速创建新菜单</p>
+              </div>
+            </div>
           </div>
         </div>
       </div>

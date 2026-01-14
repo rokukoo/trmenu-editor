@@ -61,6 +61,7 @@ import {
   CollapsibleContent,
   CollapsibleTrigger,
 } from "@/components/ui/collapsible";
+import { Separator } from "@/components/ui/separator";
 import { useMenuStore } from "@/store/menu-store";
 
 // 可拖拽的菜单项组件
@@ -377,9 +378,9 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
           <SidebarMenuItem>
             <SidebarMenuButton
               size="lg"
-              className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
+              className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground group-data-[collapsible=icon]:justify-center"
             >
-              <div className="flex aspect-square size-8 items-center justify-center overflow-hidden bg-white dark:bg-slate-800 rounded-md">
+              <div className="flex aspect-square size-8 items-center justify-center overflow-hidden bg-white dark:bg-slate-800 rounded-md group-data-[collapsible=icon]:mx-0">
                 <Image
                   src="/image.png"
                   alt="TrMenu Logo"
@@ -389,7 +390,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                   priority
                 />
               </div>
-              <div className="grid flex-1 text-left text-sm leading-tight">
+              <div className="grid flex-1 text-left text-sm leading-tight group-data-[collapsible=icon]:hidden">
                 <span className="truncate font-semibold">TrMenu Editor</span>
                 <span className="truncate text-xs text-muted-foreground">
                   可视化菜单编辑器
@@ -403,7 +404,12 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       <SidebarContent>
         {/* 工作区 */}
         <SidebarGroup className="py-0">
-          <SidebarGroupLabel>工作区</SidebarGroupLabel>
+          <div className="group-data-[collapsible=icon]:hidden">
+            <SidebarGroupLabel>工作区</SidebarGroupLabel>
+          </div>
+          <div className="hidden group-data-[collapsible=icon]:flex h-8 items-center px-2">
+            <Separator />
+          </div>
           <SidebarMenu>
             <SidebarMenuItem>
               <SidebarMenuButton
