@@ -89,8 +89,6 @@ pnpm start
 
 <div align="center">
 
-**⭐ 如果这个项目对你有帮助，请给一个 Star！**
-
-Made with ❤️ by [Your Name](https://github.com/your-username)
+**⭐ 如果这个项目对你有帮助，可以留下一个 Star！**
 
 </div>

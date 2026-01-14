@@ -1,0 +1,72 @@
+# 静态部署到 GitHub Pages
+# 只部署到 Pages，不包含其他检查
+
+name: Deploy to Pages
+
+on:
+    # 在 main 分支推送时运行
+    push:
+        branches: [main, master]
+
+    # 允许手动触发
+    workflow_dispatch:
+
+# 设置 GITHUB_TOKEN 权限，允许部署到 GitHub Pages
+permissions:
+    contents: read
+    pages: write
+    id-token: write
+
+# 同时只允许一个部署任务
+concurrency:
+    group: "pages"
+    cancel-in-progress: false
+
+jobs:
+    # 构建任务
+    build:
+        name: 构建静态站点
+        runs-on: ubuntu-latest
+
+        steps:
+            - name: 📥 检出代码
+              uses: actions/checkout@v4
+
+            - name: 📦 设置 pnpm
+              uses: pnpm/action-setup@v2
+              with:
+                  version: 8
+
+            - name: 🟢 设置 Node.js
+              uses: actions/setup-node@v4
+              with:
+                  node-version: "20"
+                  cache: "pnpm"
+
+            - name: 📚 安装依赖
+              run: pnpm install --frozen-lockfile
+
+            - name: 🏗️ 构建应用
+              run: pnpm run build
+              env:
+                  NODE_ENV: production
+
+            - name: 📤 上传构建产物
+              uses: actions/upload-pages-artifact@v3
+              with:
+                  path: ./out
+
+    # 部署任务
+    deploy:
+        name: 部署到 Pages
+        runs-on: ubuntu-latest
+        needs: build
+
+        environment:
+            name: github-pages
+            url: ${{ steps.deployment.outputs.page_url }}
+
+        steps:
+            - name: 🚀 部署到 GitHub Pages
+              id: deployment
+              uses: actions/deploy-pages@v4
