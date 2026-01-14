@@ -232,24 +232,24 @@ export function ItemAssetsPlugin({
   return (
     <div className="flex flex-col h-full">
       {/* 搜索和筛选 */}
-      <div className="p-3 space-y-2 border-b flex-shrink-0">
+      <div className="p-2 space-y-1.5 border-b shrink-0">
         <div className="relative">
-          <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
+          <Search className="absolute left-2 top-2 h-3 w-3 text-muted-foreground" />
           <Input
             placeholder="搜索资产..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="pl-8 h-9"
+            className="pl-7 h-7 text-xs"
           />
         </div>
 
         <Select value={selectedCategory} onValueChange={setSelectedCategory}>
-          <SelectTrigger className="h-9">
+          <SelectTrigger className="h-7 text-xs">
             <SelectValue placeholder="选择分类" />
           </SelectTrigger>
           <SelectContent>
             {categories.map((cat) => (
-              <SelectItem key={cat} value={cat}>
+              <SelectItem key={cat} value={cat} className="text-xs">
                 {cat === "all" ? "全部分类" : cat}
               </SelectItem>
             ))}
@@ -258,33 +258,33 @@ export function ItemAssetsPlugin({
       </div>
 
       {/* 操作按钮 */}
-      <div className="p-3 border-b flex gap-2 flex-shrink-0">
+      <div className="p-2 border-b flex gap-1.5 shrink-0">
         <Button
           variant="outline"
           size="sm"
-          className="flex-1 h-8 text-xs"
+          className="flex-1 h-6 text-[10px]"
           onClick={addCurrentItem}
           disabled={!selectedItem}
         >
-          <Plus className="h-3 w-3 mr-1" />
+          <Plus className="h-2.5 w-2.5 mr-0.5" />
           添加当前物品
         </Button>
       </div>
 
       {/* 资产列表 */}
       <ScrollArea className="flex-1">
-        <div className="p-3 space-y-2">
+        <div className="p-2 space-y-1.5">
           {filteredAssets.length === 0 ? (
-            <div className="text-center py-8 text-muted-foreground">
-              <Package className="h-12 w-12 mx-auto mb-2 opacity-20" />
-              <p className="text-sm">暂无资产</p>
+            <div className="text-center py-6 text-muted-foreground">
+              <Package className="h-8 w-8 mx-auto mb-1.5 opacity-20" />
+              <p className="text-xs">暂无资产</p>
             </div>
           ) : (
             filteredAssets.map((asset) => (
               <div
                 key={asset.id}
                 className={cn(
-                  "group relative p-3 border rounded-lg hover:bg-accent/50 transition-colors cursor-move",
+                  "group relative p-2 border rounded-md hover:bg-accent/50 transition-colors cursor-move",
                   draggedItem?.id === asset.id && "opacity-50"
                 )}
                 draggable
@@ -293,56 +293,59 @@ export function ItemAssetsPlugin({
               >
                 {/* 拖拽提示 */}
                 <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
-                  <div className="bg-primary/10 rounded px-2 py-1">
-                    <span className="text-xs text-primary font-medium">
+                  <div className="bg-primary/10 rounded px-1.5 py-0.5">
+                    <span className="text-[10px] text-primary font-medium">
                       拖拽到画布
                     </span>
                   </div>
                 </div>
 
-                <div className="flex items-start gap-2">
-                  <div className="h-10 w-10 rounded bg-gradient-to-br from-blue-500/20 to-purple-500/20 flex items-center justify-center flex-shrink-0">
-                    <Package className="h-5 w-5 text-blue-500" />
+                <div className="flex items-start gap-1.5">
+                  <div className="h-7 w-7 rounded bg-linear-to-br from-blue-500/20 to-purple-500/20 flex items-center justify-center shrink-0">
+                    <Package className="h-3.5 w-3.5 text-blue-500" />
                   </div>
                   <div className="flex-1 min-w-0">
-                    <div className="flex items-start justify-between gap-2">
+                    <div className="flex items-start justify-between gap-1.5">
                       <div className="flex-1 min-w-0">
-                        <h4 className="font-medium text-sm truncate">
+                        <h4 className="font-medium text-xs truncate">
                           {asset.name}
                         </h4>
-                        <p className="text-xs text-muted-foreground truncate">
+                        <p className="text-[10px] text-muted-foreground truncate leading-tight">
                           {asset.description}
                         </p>
                       </div>
                       <Button
                         variant="ghost"
                         size="icon"
-                        className="h-6 w-6 flex-shrink-0 opacity-0 group-hover:opacity-100"
+                        className="h-5 w-5 shrink-0 opacity-0 group-hover:opacity-100"
                         onClick={() => deleteAsset(asset.id)}
                       >
-                        <Trash2 className="h-3 w-3" />
+                        <Trash2 className="h-2.5 w-2.5" />
                       </Button>
                     </div>
 
-                    <div className="flex items-center gap-1 mt-2">
-                      <Badge variant="secondary" className="text-xs h-5">
+                    <div className="flex items-center gap-1 mt-1">
+                      <Badge
+                        variant="secondary"
+                        className="text-[9px] h-4 px-1"
+                      >
                         {asset.category}
                       </Badge>
-                      <span className="text-xs text-muted-foreground">
+                      <span className="text-[9px] text-muted-foreground font-mono">
                         {asset.template.material}
                       </span>
                     </div>
                   </div>
                 </div>
 
-                <div className="mt-2 pt-2 border-t flex gap-1">
+                <div className="mt-1.5 pt-1.5 border-t flex gap-1">
                   <Button
                     variant="outline"
                     size="sm"
-                    className="h-7 text-xs flex-1"
+                    className="h-6 text-[10px] flex-1"
                     onClick={() => applyAsset(asset)}
                   >
-                    <Download className="h-3 w-3 mr-1" />
+                    <Download className="h-2.5 w-2.5 mr-0.5" />
                     使用
                   </Button>
                 </div>
@@ -353,7 +356,7 @@ export function ItemAssetsPlugin({
       </ScrollArea>
 
       {/* 底部统计 */}
-      <div className="p-3 border-t text-xs text-muted-foreground text-center flex-shrink-0">
+      <div className="p-2 border-t text-[10px] text-muted-foreground text-center shrink-0">
         共 {filteredAssets.length} 个资产
       </div>
     </div>

@@ -71,12 +71,12 @@ export function MenuCanvas({
       <div
         key={slot}
         className={cn(
-          "relative aspect-square border-2 rounded-md transition-all",
-          "hover:border-primary/50 cursor-pointer",
-          isSelected && "border-primary ring-2 ring-primary/20",
-          isDragOver && "border-primary bg-primary/10",
-          !item && "border-border bg-muted/30",
-          item && "border-border bg-card"
+          "relative aspect-square border rounded transition-all",
+          "hover:border-primary/60 cursor-pointer group",
+          isSelected && "border-primary ring-1 ring-primary/30 shadow-sm",
+          isDragOver && "border-primary bg-primary/10 scale-[1.02]",
+          !item && "border-border/50 bg-muted/10 hover:bg-muted/30",
+          item && "border-border/70 bg-card shadow-sm hover:shadow"
         )}
         onClick={() => {
           if (item) {
@@ -94,33 +94,36 @@ export function MenuCanvas({
             onDragStart={(e) => handleDragStart(e, item)}
             onDragEnd={handleDragEnd}
             className={cn(
-              "w-full h-full flex flex-col items-center justify-center p-2",
-              isDragging && "opacity-50"
+              "w-full h-full flex flex-col items-center justify-center p-1",
+              isDragging && "opacity-50 cursor-grabbing",
+              "cursor-grab active:cursor-grabbing"
             )}
           >
             {/* 物品图标 - 这里暂时用文字表示材质 */}
-            <div className="text-2xl mb-1">{getItemIcon(item.material)}</div>
+            <div className="text-base leading-none">
+              {getItemIcon(item.material)}
+            </div>
             {/* 物品数量 */}
             {item.amount && item.amount > 1 && (
-              <span className="absolute bottom-1 right-1 text-xs font-bold text-foreground">
+              <span className="absolute bottom-0.5 right-0.5 text-[9px] font-semibold text-foreground bg-background/70 rounded px-0.5 leading-none shadow-sm">
                 {item.amount}
               </span>
             )}
             {/* 自定义模型数据标识 */}
             {item.customModelData && (
-              <span className="absolute top-1 right-1 text-[10px] text-muted-foreground">
+              <span className="absolute top-0.5 right-0.5 text-[8px] text-muted-foreground bg-background/70 rounded px-0.5 leading-none font-mono shadow-sm">
                 #{item.customModelData}
               </span>
             )}
           </div>
         ) : (
-          <div className="w-full h-full flex items-center justify-center text-muted-foreground/30">
-            <Plus className="h-4 w-4" />
+          <div className="w-full h-full flex items-center justify-center text-muted-foreground/15 group-hover:text-muted-foreground/30 transition-colors">
+            <Plus className="h-3 w-3" />
           </div>
         )}
 
         {/* 槽位号 */}
-        <span className="absolute top-0.5 left-1 text-[10px] text-muted-foreground/50">
+        <span className="absolute top-0.5 left-0.5 text-[8px] text-muted-foreground/30 font-mono leading-none">
           {slot}
         </span>
       </div>
@@ -128,32 +131,39 @@ export function MenuCanvas({
   };
 
   return (
-    <div className="flex-1 flex flex-col items-center justify-center p-8 bg-muted/20">
-      <div className="w-full max-w-4xl">
+    <div
+      className="flex-1 flex flex-col items-center justify-center p-6 bg-muted/20 relative overflow-hidden"
+      style={{
+        backgroundImage: `
+          linear-gradient(to right, hsl(var(--border) / 0.1) 1px, transparent 1px),
+          linear-gradient(to bottom, hsl(var(--border) / 0.1) 1px, transparent 1px)
+        `,
+        backgroundSize: "24px 24px",
+      }}
+    >
+      {/* 编辑器网格背景装饰 */}
+      <div className="absolute inset-0 bg-linear-to-b from-transparent via-transparent to-background/30 pointer-events-none" />
+
+      <div className="w-full max-w-2xl relative z-10">
         {/* 菜单标题 */}
-        <div className="mb-6 text-center">
-          <h2 className="text-2xl font-bold mb-2">{menu.title}</h2>
-          <p className="text-sm text-muted-foreground">
+        <div className="mb-3 text-center">
+          <h2 className="text-lg font-bold mb-0.5">{menu.title}</h2>
+          <p className="text-[10px] text-muted-foreground">
             {menu.size} 格 • {menu.type} • {menu.items.length} 个物品
           </p>
         </div>
 
         {/* 菜单网格 */}
         <div
-          className="bg-background/80 backdrop-blur-sm rounded-lg p-4 shadow-xl border"
+          className="bg-background/90 backdrop-blur-sm rounded-lg p-2.5 border border-border/50"
           style={{
             display: "grid",
             gridTemplateColumns: `repeat(${cols}, 1fr)`,
             gridTemplateRows: `repeat(${rows}, 1fr)`,
-            gap: "8px",
+            gap: "4px",
           }}
         >
           {Array.from({ length: menu.size }, (_, i) => renderSlot(i))}
-        </div>
-
-        {/* 提示信息 */}
-        <div className="mt-4 text-center text-xs text-muted-foreground">
-          点击空槽位添加物品 • 拖拽物品重新排列 • 点击物品查看属性
         </div>
       </div>
     </div>

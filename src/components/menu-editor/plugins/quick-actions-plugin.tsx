@@ -216,13 +216,13 @@ export function QuickActionsPlugin({ onItemCreate }: PluginComponentProps) {
 
   return (
     <ScrollArea className="h-full">
-      <div className="p-4 space-y-4">
-        <div className="space-y-2">
-          <div className="flex items-center gap-2 mb-3">
-            <Wand2 className="h-4 w-4 text-purple-500" />
-            <h3 className="font-semibold text-sm">快捷操作</h3>
+      <div className="p-3 space-y-3">
+        <div className="space-y-1">
+          <div className="flex items-center gap-1.5">
+            <Wand2 className="h-3.5 w-3.5 text-purple-500" />
+            <h3 className="font-semibold text-xs">快捷操作</h3>
           </div>
-          <p className="text-xs text-muted-foreground">
+          <p className="text-[10px] text-muted-foreground leading-tight">
             快速生成常用的菜单布局和装饰
           </p>
         </div>
@@ -230,34 +230,34 @@ export function QuickActionsPlugin({ onItemCreate }: PluginComponentProps) {
         <Separator />
 
         {categories.map((category) => (
-          <div key={category} className="space-y-2">
-            <h4 className="text-xs font-medium text-muted-foreground uppercase tracking-wider">
+          <div key={category} className="space-y-1.5">
+            <h4 className="text-[10px] font-medium text-muted-foreground uppercase tracking-wider">
               {category}
             </h4>
-            <div className="space-y-2">
+            <div className="space-y-1.5">
               {actions
                 .filter((a) => a.category === category)
                 .map((action) => (
                   <div
                     key={action.id}
-                    className="group p-3 border rounded-lg hover:bg-accent/50 transition-colors"
+                    className="group p-2 border rounded-md hover:bg-accent/50 transition-colors"
                   >
-                    <div className="flex items-start gap-3">
-                      <div className="h-10 w-10 rounded bg-gradient-to-br from-purple-500/20 to-pink-500/20 flex items-center justify-center flex-shrink-0">
-                        <action.icon className="h-5 w-5 text-purple-600" />
+                    <div className="flex items-start gap-2">
+                      <div className="h-7 w-7 rounded bg-linear-to-br from-purple-500/20 to-pink-500/20 flex items-center justify-center shrink-0">
+                        <action.icon className="h-3.5 w-3.5 text-purple-600" />
                       </div>
                       <div className="flex-1 min-w-0">
-                        <h4 className="font-medium text-sm">{action.name}</h4>
-                        <p className="text-xs text-muted-foreground mt-0.5">
+                        <h4 className="font-medium text-xs">{action.name}</h4>
+                        <p className="text-[10px] text-muted-foreground mt-0.5 leading-tight">
                           {action.description}
                         </p>
                         <Button
                           variant="outline"
                           size="sm"
-                          className="w-full h-7 text-xs mt-2"
+                          className="w-full h-6 text-[10px] mt-1.5"
                           onClick={action.action}
                         >
-                          <Wand2 className="h-3 w-3 mr-1" />
+                          <Wand2 className="h-2.5 w-2.5 mr-0.5" />
                           执行
                         </Button>
                       </div>
@@ -269,8 +269,8 @@ export function QuickActionsPlugin({ onItemCreate }: PluginComponentProps) {
         ))}
 
         {/* 提示信息 */}
-        <div className="p-3 bg-muted/50 rounded-lg">
-          <p className="text-xs text-muted-foreground">
+        <div className="p-2 bg-muted/50 rounded-md">
+          <p className="text-[10px] text-muted-foreground leading-tight">
             💡 提示：快捷操作会直接修改菜单，建议在使用前先保存当前进度。
           </p>
         </div>

@@ -36,27 +36,27 @@ export function EditorToolbar({
   hasUnsavedChanges = false,
 }: EditorToolbarProps) {
   return (
-    <div className="h-12 border-b bg-background/95 backdrop-blur supports-backdrop-filter:bg-background/60 flex items-center justify-between px-4 gap-4">
+    <div className="h-11 border-b bg-background/95 backdrop-blur supports-backdrop-filter:bg-background/60 flex items-center justify-between px-3 gap-3">
       {/* 左侧：文件名和主要操作 */}
       <div className="flex items-center gap-2">
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-1.5">
           <span className="font-medium text-sm">{menuName}</span>
           {hasUnsavedChanges && (
-            <span className="text-xs text-muted-foreground">• 未保存</span>
+            <span className="text-[10px] text-muted-foreground">• 未保存</span>
           )}
         </div>
-        <Separator orientation="vertical" className="h-6" />
+        <Separator orientation="vertical" className="h-5" />
         <TooltipProvider delayDuration={300}>
-          <div className="flex items-center gap-1">
+          <div className="flex items-center gap-0.5">
             <Tooltip>
               <TooltipTrigger asChild>
                 <Button
                   variant="ghost"
                   size="sm"
                   onClick={onSave}
-                  className="h-8"
+                  className="h-7 text-xs px-2"
                 >
-                  <Save className="h-4 w-4 mr-2" />
+                  <Save className="h-3.5 w-3.5 mr-1.5" />
                   保存
                 </Button>
               </TooltipTrigger>
@@ -71,9 +71,9 @@ export function EditorToolbar({
                   variant="ghost"
                   size="sm"
                   onClick={onExport}
-                  className="h-8"
+                  className="h-7 text-xs px-2"
                 >
-                  <FileDown className="h-4 w-4 mr-2" />
+                  <FileDown className="h-3.5 w-3.5 mr-1.5" />
                   导出
                 </Button>
               </TooltipTrigger>
@@ -88,9 +88,9 @@ export function EditorToolbar({
                   variant="ghost"
                   size="sm"
                   onClick={onImport}
-                  className="h-8"
+                  className="h-7 text-xs px-2"
                 >
-                  <FileUp className="h-4 w-4 mr-2" />
+                  <FileUp className="h-3.5 w-3.5 mr-1.5" />
                   导入
                 </Button>
               </TooltipTrigger>
@@ -103,12 +103,12 @@ export function EditorToolbar({
       </div>
 
       {/* 中间：编辑操作 */}
-      <div className="flex items-center gap-1">
+      <div className="flex items-center gap-0.5">
         <TooltipProvider delayDuration={300}>
           <Tooltip>
             <TooltipTrigger asChild>
-              <Button variant="ghost" size="icon" className="h-8 w-8" disabled>
-                <Undo className="h-4 w-4" />
+              <Button variant="ghost" size="icon" className="h-7 w-7" disabled>
+                <Undo className="h-3.5 w-3.5" />
               </Button>
             </TooltipTrigger>
             <TooltipContent>
@@ -118,8 +118,8 @@ export function EditorToolbar({
 
           <Tooltip>
             <TooltipTrigger asChild>
-              <Button variant="ghost" size="icon" className="h-8 w-8" disabled>
-                <Redo className="h-4 w-4" />
+              <Button variant="ghost" size="icon" className="h-7 w-7" disabled>
+                <Redo className="h-3.5 w-3.5" />
               </Button>
             </TooltipTrigger>
             <TooltipContent>
@@ -130,7 +130,7 @@ export function EditorToolbar({
       </div>
 
       {/* 右侧：预览和设置 */}
-      <div className="flex items-center gap-2">
+      <div className="flex items-center gap-1.5">
         <TooltipProvider delayDuration={300}>
           <Tooltip>
             <TooltipTrigger asChild>
@@ -138,9 +138,9 @@ export function EditorToolbar({
                 variant="default"
                 size="sm"
                 onClick={onPreview}
-                className="h-8"
+                className="h-7 text-xs px-2.5"
               >
-                <Play className="h-4 w-4 mr-2" />
+                <Play className="h-3.5 w-3.5 mr-1.5" />
                 预览
               </Button>
             </TooltipTrigger>
@@ -149,12 +149,12 @@ export function EditorToolbar({
             </TooltipContent>
           </Tooltip>
 
-          <Separator orientation="vertical" className="h-6" />
+          <Separator orientation="vertical" className="h-5" />
 
           <Tooltip>
             <TooltipTrigger asChild>
-              <Button variant="ghost" size="icon" className="h-8 w-8">
-                <Settings className="h-4 w-4" />
+              <Button variant="ghost" size="icon" className="h-7 w-7">
+                <Settings className="h-3.5 w-3.5" />
               </Button>
             </TooltipTrigger>
             <TooltipContent>

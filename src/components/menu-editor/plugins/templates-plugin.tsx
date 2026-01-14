@@ -255,9 +255,9 @@ export function TemplatesPlugin({ onItemCreate }: PluginComponentProps) {
   return (
     <div className="flex h-full">
       {/* 分类列表 */}
-      <div className="w-24 border-r flex-shrink-0">
+      <div className="w-20 border-r shrink-0">
         <ScrollArea className="h-full">
-          <div className="p-2 space-y-1">
+          <div className="p-1.5 space-y-0.5">
             {categories.map((category) => {
               const categoryTemplates = TEMPLATES.filter(
                 (t) => t.category === category
@@ -267,12 +267,12 @@ export function TemplatesPlugin({ onItemCreate }: PluginComponentProps) {
                   key={category}
                   variant="ghost"
                   size="sm"
-                  className="w-full justify-start h-auto py-2 px-2"
+                  className="w-full justify-start h-auto py-1.5 px-1.5"
                   onClick={() => setSelectedTemplate(categoryTemplates[0])}
                 >
-                  <div className="text-xs text-left">
+                  <div className="text-[10px] text-left leading-tight">
                     <div className="font-medium">{category}</div>
-                    <div className="text-muted-foreground">
+                    <div className="text-muted-foreground text-[9px]">
                       {categoryTemplates.length}
                     </div>
                   </div>
@@ -286,33 +286,33 @@ export function TemplatesPlugin({ onItemCreate }: PluginComponentProps) {
       {/* 模板列表 */}
       <div className="flex-1">
         <ScrollArea className="h-full">
-          <div className="p-3 space-y-2">
+          <div className="p-2 space-y-1.5">
             {TEMPLATES.map((template) => (
               <div
                 key={template.id}
                 className={cn(
-                  "group p-3 border rounded-lg hover:bg-accent/50 transition-colors cursor-pointer",
+                  "group p-2 border rounded-md hover:bg-accent/50 transition-colors cursor-pointer",
                   selectedTemplate?.id === template.id && "bg-accent"
                 )}
                 onClick={() => setSelectedTemplate(template)}
               >
-                <div className="flex items-start gap-3">
-                  <div className="h-10 w-10 rounded bg-gradient-to-br from-green-500/20 to-blue-500/20 flex items-center justify-center flex-shrink-0">
-                    <template.icon className="h-5 w-5 text-green-600" />
+                <div className="flex items-start gap-2">
+                  <div className="h-7 w-7 rounded bg-linear-to-br from-green-500/20 to-blue-500/20 flex items-center justify-center shrink-0">
+                    <template.icon className="h-3.5 w-3.5 text-green-600" />
                   </div>
                   <div className="flex-1 min-w-0">
-                    <div className="flex items-start justify-between gap-2">
+                    <div className="flex items-start justify-between gap-1.5">
                       <div className="flex-1 min-w-0">
-                        <h4 className="font-medium text-sm">{template.name}</h4>
-                        <p className="text-xs text-muted-foreground mt-0.5">
+                        <h4 className="font-medium text-xs">{template.name}</h4>
+                        <p className="text-[10px] text-muted-foreground mt-0.5 leading-tight">
                           {template.description}
                         </p>
                       </div>
-                      <ChevronRight className="h-4 w-4 text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity flex-shrink-0" />
+                      <ChevronRight className="h-3 w-3 text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity shrink-0" />
                     </div>
 
-                    <div className="mt-2 flex items-center gap-2">
-                      <span className="text-xs text-muted-foreground">
+                    <div className="mt-1 flex items-center gap-1.5">
+                      <span className="text-[10px] text-muted-foreground">
                         {template.items.length} 个物品
                       </span>
                     </div>
@@ -320,13 +320,13 @@ export function TemplatesPlugin({ onItemCreate }: PluginComponentProps) {
                     <Button
                       variant="outline"
                       size="sm"
-                      className="w-full h-7 text-xs mt-2"
+                      className="w-full h-6 text-[10px] mt-1.5"
                       onClick={(e) => {
                         e.stopPropagation();
                         applyTemplate(template);
                       }}
                     >
-                      <Download className="h-3 w-3 mr-1" />
+                      <Download className="h-2.5 w-2.5 mr-0.5" />
                       应用模板
                     </Button>
                   </div>

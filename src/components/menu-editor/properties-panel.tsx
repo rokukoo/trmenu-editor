@@ -49,22 +49,25 @@ export function PropertiesPanel({
   const [itemPropsOpen, setItemPropsOpen] = useState(true);
 
   return (
-    <div className="w-80 border-l bg-background/50 backdrop-blur-sm flex flex-col overflow-hidden">
+    <div className="w-72 border-l bg-background/50 backdrop-blur-sm flex flex-col overflow-hidden">
       <ScrollArea className="flex-1">
-        <div className="p-4 space-y-4">
+        <div className="p-3 space-y-3">
           {/* 菜单属性 */}
           <Collapsible open={menuPropsOpen} onOpenChange={setMenuPropsOpen}>
-            <CollapsibleTrigger className="flex items-center justify-between w-full p-2 hover:bg-accent rounded-md">
-              <span className="font-semibold text-sm">菜单属性</span>
+            <CollapsibleTrigger className="flex items-center justify-between w-full px-2 py-1.5 hover:bg-accent rounded-md transition-colors">
+              <span className="font-semibold text-xs">菜单属性</span>
               <ChevronRight
-                className={`h-4 w-4 transition-transform ${
+                className={`h-3.5 w-3.5 transition-transform ${
                   menuPropsOpen ? "rotate-90" : ""
                 }`}
               />
             </CollapsibleTrigger>
-            <CollapsibleContent className="mt-3 space-y-3">
-              <div className="space-y-2">
-                <Label htmlFor="menu-title" className="text-xs">
+            <CollapsibleContent className="mt-2 space-y-2.5">
+              <div className="space-y-1.5">
+                <Label
+                  htmlFor="menu-title"
+                  className="text-xs font-medium text-muted-foreground"
+                >
                   显示标题
                 </Label>
                 <Input
@@ -72,12 +75,15 @@ export function PropertiesPanel({
                   value={menu.title}
                   onChange={(e) => onMenuUpdate({ title: e.target.value })}
                   placeholder="菜单标题"
-                  className="h-8"
+                  className="h-7 text-sm"
                 />
               </div>
 
-              <div className="space-y-2">
-                <Label htmlFor="menu-size" className="text-xs">
+              <div className="space-y-1.5">
+                <Label
+                  htmlFor="menu-size"
+                  className="text-xs font-medium text-muted-foreground"
+                >
                   菜单大小
                 </Label>
                 <Select
@@ -86,22 +92,37 @@ export function PropertiesPanel({
                     onMenuUpdate({ size: Number(value) as MenuSize })
                   }
                 >
-                  <SelectTrigger id="menu-size" className="h-8">
+                  <SelectTrigger id="menu-size" className="h-7 text-sm">
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="9">9 格 (1 行)</SelectItem>
-                    <SelectItem value="18">18 格 (2 行)</SelectItem>
-                    <SelectItem value="27">27 格 (3 行)</SelectItem>
-                    <SelectItem value="36">36 格 (4 行)</SelectItem>
-                    <SelectItem value="45">45 格 (5 行)</SelectItem>
-                    <SelectItem value="54">54 格 (6 行)</SelectItem>
+                    <SelectItem value="9" className="text-sm">
+                      9 格 (1 行)
+                    </SelectItem>
+                    <SelectItem value="18" className="text-sm">
+                      18 格 (2 行)
+                    </SelectItem>
+                    <SelectItem value="27" className="text-sm">
+                      27 格 (3 行)
+                    </SelectItem>
+                    <SelectItem value="36" className="text-sm">
+                      36 格 (4 行)
+                    </SelectItem>
+                    <SelectItem value="45" className="text-sm">
+                      45 格 (5 行)
+                    </SelectItem>
+                    <SelectItem value="54" className="text-sm">
+                      54 格 (6 行)
+                    </SelectItem>
                   </SelectContent>
                 </Select>
               </div>
 
-              <div className="space-y-2">
-                <Label htmlFor="menu-type" className="text-xs">
+              <div className="space-y-1.5">
+                <Label
+                  htmlFor="menu-type"
+                  className="text-xs font-medium text-muted-foreground"
+                >
                   菜单类型
                 </Label>
                 <Select
@@ -110,25 +131,37 @@ export function PropertiesPanel({
                     onMenuUpdate({ type: value as MenuType })
                   }
                 >
-                  <SelectTrigger id="menu-type" className="h-8">
+                  <SelectTrigger id="menu-type" className="h-7 text-sm">
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="CHEST">箱子 (CHEST)</SelectItem>
-                    <SelectItem value="HOPPER">漏斗 (HOPPER)</SelectItem>
-                    <SelectItem value="DISPENSER">
+                    <SelectItem value="CHEST" className="text-sm">
+                      箱子 (CHEST)
+                    </SelectItem>
+                    <SelectItem value="HOPPER" className="text-sm">
+                      漏斗 (HOPPER)
+                    </SelectItem>
+                    <SelectItem value="DISPENSER" className="text-sm">
                       发射器 (DISPENSER)
                     </SelectItem>
-                    <SelectItem value="DROPPER">投掷器 (DROPPER)</SelectItem>
+                    <SelectItem value="DROPPER" className="text-sm">
+                      投掷器 (DROPPER)
+                    </SelectItem>
                   </SelectContent>
                 </Select>
               </div>
 
-              <div className="pt-2 flex gap-2">
-                <Badge variant="secondary" className="flex-1 justify-center">
+              <div className="pt-1 flex gap-1.5">
+                <Badge
+                  variant="secondary"
+                  className="flex-1 justify-center text-xs py-0.5"
+                >
                   物品 {menu.items.length}
                 </Badge>
-                <Badge variant="outline" className="flex-1 justify-center">
+                <Badge
+                  variant="outline"
+                  className="flex-1 justify-center text-xs py-0.5"
+                >
                   空位 {menu.size - menu.items.length}
                 </Badge>
               </div>
@@ -139,17 +172,17 @@ export function PropertiesPanel({
 
           {/* 物品属性 */}
           <Collapsible open={itemPropsOpen} onOpenChange={setItemPropsOpen}>
-            <CollapsibleTrigger className="flex items-center justify-between w-full p-2 hover:bg-accent rounded-md">
-              <span className="font-semibold text-sm">
+            <CollapsibleTrigger className="flex items-center justify-between w-full px-2 py-1.5 hover:bg-accent rounded-md transition-colors">
+              <span className="font-semibold text-xs">
                 {selectedItem ? "物品属性" : "未选中物品"}
               </span>
               <ChevronRight
-                className={`h-4 w-4 transition-transform ${
+                className={`h-3.5 w-3.5 transition-transform ${
                   itemPropsOpen ? "rotate-90" : ""
                 }`}
               />
             </CollapsibleTrigger>
-            <CollapsibleContent className="mt-3">
+            <CollapsibleContent className="mt-2">
               {selectedItem ? (
                 <ItemProperties
                   item={selectedItem}
@@ -157,7 +190,7 @@ export function PropertiesPanel({
                   onDelete={() => onItemDelete(selectedItem.id)}
                 />
               ) : (
-                <div className="text-center py-8 text-sm text-muted-foreground">
+                <div className="text-center py-6 text-xs text-muted-foreground">
                   点击画布中的物品以编辑属性
                 </div>
               )}
@@ -195,10 +228,13 @@ function ItemProperties({
   };
 
   return (
-    <div className="space-y-3">
+    <div className="space-y-2.5">
       {/* 材质 */}
-      <div className="space-y-2">
-        <Label htmlFor="item-material" className="text-xs">
+      <div className="space-y-1.5">
+        <Label
+          htmlFor="item-material"
+          className="text-xs font-medium text-muted-foreground"
+        >
           材质 (Material)
         </Label>
         <Input
@@ -206,13 +242,16 @@ function ItemProperties({
           value={item.material}
           onChange={(e) => onUpdate({ material: e.target.value.toUpperCase() })}
           placeholder="DIAMOND"
-          className="h-8 font-mono text-xs"
+          className="h-7 font-mono text-xs"
         />
       </div>
 
       {/* 显示名称 */}
-      <div className="space-y-2">
-        <Label htmlFor="item-display-name" className="text-xs">
+      <div className="space-y-1.5">
+        <Label
+          htmlFor="item-display-name"
+          className="text-xs font-medium text-muted-foreground"
+        >
           显示名称
         </Label>
         <Input
@@ -220,14 +259,17 @@ function ItemProperties({
           value={item.displayName || ""}
           onChange={(e) => onUpdate({ displayName: e.target.value })}
           placeholder="自定义名称"
-          className="h-8"
+          className="h-7 text-sm"
         />
       </div>
 
       {/* 数量和槽位 */}
-      <div className="grid grid-cols-2 gap-2">
-        <div className="space-y-2">
-          <Label htmlFor="item-amount" className="text-xs">
+      <div className="grid grid-cols-2 gap-1.5">
+        <div className="space-y-1.5">
+          <Label
+            htmlFor="item-amount"
+            className="text-xs font-medium text-muted-foreground"
+          >
             数量
           </Label>
           <Input
@@ -237,27 +279,33 @@ function ItemProperties({
             max={64}
             value={item.amount || 1}
             onChange={(e) => onUpdate({ amount: Number(e.target.value) })}
-            className="h-8"
+            className="h-7 text-sm"
           />
         </div>
-        <div className="space-y-2">
-          <Label htmlFor="item-slot" className="text-xs">
+        <div className="space-y-1.5">
+          <Label
+            htmlFor="item-slot"
+            className="text-xs font-medium text-muted-foreground"
+          >
             槽位
           </Label>
           <Input
             id="item-slot"
             type="number"
             value={item.slot}
-            className="h-8"
+            className="h-7 text-sm"
             disabled
           />
         </div>
       </div>
 
       {/* 自定义模型数据 */}
-      <div className="space-y-2">
-        <Label htmlFor="item-custom-model" className="text-xs">
-          自定义模型数据
+      <div className="space-y-1.5">
+        <Label
+          htmlFor="item-custom-model"
+          className="text-xs font-medium text-muted-foreground"
+        >
+          自定义模型数据 (CustomModelData)
         </Label>
         <Input
           id="item-custom-model"
@@ -271,28 +319,30 @@ function ItemProperties({
             })
           }
           placeholder="留空表示无"
-          className="h-8"
+          className="h-7 text-sm"
         />
       </div>
 
       {/* Lore 描述 */}
-      <div className="space-y-2">
-        <Label className="text-xs">Lore 描述</Label>
-        <div className="space-y-2">
+      <div className="space-y-1.5">
+        <Label className="text-xs font-medium text-muted-foreground">
+          Lore 描述
+        </Label>
+        <div className="space-y-1.5">
           {item.lore && item.lore.length > 0 && (
             <div className="space-y-1">
               {item.lore.map((line, index) => (
                 <div
                   key={index}
-                  className="flex items-center gap-2 group text-xs bg-muted/50 rounded px-2 py-1.5"
+                  className="flex items-center gap-1.5 group text-xs bg-muted/50 rounded px-2 py-1 hover:bg-muted/80 transition-colors"
                 >
-                  <span className="flex-1 truncate text-muted-foreground">
+                  <span className="flex-1 truncate text-muted-foreground text-xs">
                     {line}
                   </span>
                   <Button
                     variant="ghost"
                     size="icon"
-                    className="h-5 w-5 opacity-0 group-hover:opacity-100"
+                    className="h-4 w-4 opacity-0 group-hover:opacity-100 transition-opacity"
                     onClick={() => handleRemoveLore(index)}
                   >
                     <Trash2 className="h-3 w-3" />
@@ -301,7 +351,7 @@ function ItemProperties({
               ))}
             </div>
           )}
-          <div className="flex gap-2">
+          <div className="flex gap-1.5">
             <Input
               value={loreInput}
               onChange={(e) => setLoreInput(e.target.value)}
@@ -311,47 +361,47 @@ function ItemProperties({
                 }
               }}
               placeholder="输入描述行"
-              className="h-8 text-xs"
+              className="h-7 text-xs"
             />
             <Button
               size="icon"
               variant="outline"
-              className="h-8 w-8 shrink-0"
+              className="h-7 w-7 shrink-0"
               onClick={handleAddLore}
             >
-              <Plus className="h-4 w-4" />
+              <Plus className="h-3.5 w-3.5" />
             </Button>
           </div>
         </div>
       </div>
 
       {/* 动作提示 */}
-      <Card>
-        <CardHeader className="p-3 pb-2">
-          <CardTitle className="text-xs">点击动作</CardTitle>
+      <Card className="border-dashed">
+        <CardHeader className="p-2.5 pb-1.5">
+          <CardTitle className="text-xs font-medium">点击动作</CardTitle>
           <CardDescription className="text-xs">
             {item.actions && item.actions.length > 0
               ? `${item.actions.length} 个动作`
               : "暂无动作"}
           </CardDescription>
         </CardHeader>
-        <CardContent className="p-3 pt-0">
-          <Button variant="outline" size="sm" className="w-full h-7 text-xs">
+        <CardContent className="p-2.5 pt-0">
+          <Button variant="outline" size="sm" className="w-full h-6 text-xs">
             配置动作
           </Button>
         </CardContent>
       </Card>
 
-      <Separator />
+      <Separator className="my-2" />
 
       {/* 删除按钮 */}
       <Button
         variant="destructive"
         size="sm"
-        className="w-full"
+        className="w-full h-7 text-xs"
         onClick={onDelete}
       >
-        <Trash2 className="h-4 w-4 mr-2" />
+        <Trash2 className="h-3 w-3 mr-1.5" />
         删除物品
       </Button>
     </div>
