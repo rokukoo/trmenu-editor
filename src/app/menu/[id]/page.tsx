@@ -8,10 +8,8 @@ import type { MenuItem, MenuConfig } from "@/types";
 import { EditorToolbar } from "@/components/menu-editor/editor-toolbar";
 import { MenuCanvas } from "@/components/menu-editor/menu-canvas";
 import { PropertiesPanel } from "@/components/menu-editor/properties-panel";
-import { AIAssistant } from "@/components/menu-editor/ai-assistant";
-import { Button } from "@/components/ui/button";
-import { Bot, ChevronLeft, ChevronRight } from "lucide-react";
-import { cn } from "@/lib/utils";
+import { PluginPanel } from "@/components/menu-editor/plugins/plugin-panel";
+import { AVAILABLE_PLUGINS } from "@/components/menu-editor/plugins";
 
 export default function MenuEditorPage() {
   const params = useParams();
@@ -27,7 +25,6 @@ export default function MenuEditorPage() {
 
   const menuId = params.id as string;
   const [selectedItemId, setSelectedItemId] = useState<string | null>(null);
-  const [showAI, setShowAI] = useState(false);
 
   // 查找当前菜单
   const currentMenu = menus.find((m) => m.id === menuId);
@@ -106,6 +103,34 @@ export default function MenuEditorPage() {
     setSelectedItemId(newItem.id);
   };
 
+  // 处理从插件创建物品
+  const handleItemCreateFromPlugin = (itemTemplate: Partial<MenuItem>) => {
+    if (!currentMenu) return;
+
+    // 找到第一个空槽位
+    let slot = 0;
+    for (let i = 0; i < currentMenu.size; i++) {
+      if (!currentMenu.items.find((item) => item.slot === i)) {
+        slot = i;
+        break;
+      }
+    }
+
+    const newItem: MenuItem = {
+      id: `item-${Date.now()}`,
+      slot,
+      material: itemTemplate.material || "STONE",
+      displayName: itemTemplate.displayName || "新物品",
+      amount: itemTemplate.amount || 1,
+      lore: itemTemplate.lore || [],
+      actions: itemTemplate.actions || [],
+      customModelData: itemTemplate.customModelData,
+    };
+
+    addMenuItem(menuId, newItem);
+    setSelectedItemId(newItem.id);
+  };
+
   // 处理菜单更新
   const handleMenuUpdate = (updates: Partial<MenuConfig>) => {
     updateMenu(menuId, updates);
@@ -173,7 +198,7 @@ export default function MenuEditorPage() {
           />
 
           {/* 右侧面板容器 */}
-          <div className="flex">
+          <div className="flex flex-shrink-0">
             {/* 属性面板 */}
             <PropertiesPanel
               menu={currentMenu}
@@ -183,35 +208,15 @@ export default function MenuEditorPage() {
               onItemDelete={handleItemDelete}
             />
 
-            {/* AI 助手面板 */}
-            <div
-              className={cn(
-                "transition-all duration-300 border-l overflow-hidden",
-                showAI ? "w-80" : "w-0"
-              )}
-            >
-              {showAI && <AIAssistant />}
-            </div>
-
-            {/* AI 切换按钮 */}
-            <div className="flex flex-col border-l">
-              <Button
-                variant="ghost"
-                size="icon"
-                className="h-12 w-12 rounded-none"
-                onClick={() => setShowAI(!showAI)}
-                title={showAI ? "隐藏 AI 助手" : "显示 AI 助手"}
-              >
-                {showAI ? (
-                  <ChevronRight className="h-4 w-4" />
-                ) : (
-                  <>
-                    <Bot className="h-4 w-4" />
-                    <ChevronLeft className="h-3 w-3 absolute -right-1" />
-                  </>
-                )}
-              </Button>
-            </div>
+            {/* 插件面板 */}
+            <PluginPanel
+              plugins={AVAILABLE_PLUGINS}
+              pluginProps={{
+                menuId,
+                onItemCreate: handleItemCreateFromPlugin,
+                selectedItem: selectedItem || null,
+              }}
+            />
           </div>
         </div>
       </div>
